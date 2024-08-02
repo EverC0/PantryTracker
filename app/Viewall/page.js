@@ -149,7 +149,7 @@ const Viewall = () => {
                     autoHeight
                 />
             </Box>
-            <Button variant="contained" onClick={handleReset} sx={{marginTop:-14}}>
+            <Button variant="contained" onClick={handleReset} sx={{marginTop:-10}}>
                 Reset
             </Button>
         </Container>
