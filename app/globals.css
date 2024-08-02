@@ -1,0 +1,18 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  width: 100%;
+}
+
+body {
+  box-sizing: border-box;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif; /* Assuming you're using the Inter font */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit; /* Makes sure padding and border are included in width and height */
+}
