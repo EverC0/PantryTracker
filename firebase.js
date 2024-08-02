@@ -10,21 +10,19 @@ import {firebaseKeys} from './keys/firebaseKey';
 // Your web app's Firebase configuration
 // console.log("Firebase API Key:", process.env.FIREBASE_apiKey);
 
-
-
 const firebaseConfig = {
-  // console.log("Firebase API Key:", process.env.FIREBASE_apiKey);
-  apiKey: firebaseKeys.apiKey,
-  authDomain: firebaseKeys.authDomain,
-  projectId: firebaseKeys.projectId,
-  storageBucket: firebaseKeys.storageBucket,
-  messagingSenderId: firebaseKeys.messagingSenderId,
-  appId: firebaseKeys.appId
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestore = getFirestore(app)
 const auth = getAuth(app);
+const collect_name = process.env.NEXT_PUBLIC_COLLECT_NAME;
 
-export {app, firestore, auth}
+export {app, firestore, auth, collect_name}
