@@ -148,10 +148,11 @@ const Viewall = () => {
                     disableSelectionOnClick
                     autoHeight
                 />
+                <Button variant="contained" onClick={handleReset} sx={{marginTop:-9.7, marginLeft:1}}>
+                    Reset
+                </Button>
             </Box>
-            <Button variant="contained" onClick={handleReset} sx={{marginTop:-7}}>
-                Reset
-            </Button>
+
         </Container>
     )
 }
