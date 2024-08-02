@@ -72,9 +72,9 @@ const Pantrytab = () => {
         }
     }
 
-    useEffect(() => {
-      console.log(pantry)
-    }, [])
+    // useEffect(() => {
+    //   console.log(pantry)
+    // }, [])
 
 
   const addItem = async (itemName) => {

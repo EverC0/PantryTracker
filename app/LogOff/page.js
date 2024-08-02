@@ -23,7 +23,7 @@ const style = {
     pb: 3,
   };
 
-const page = () => {
+const Page = () => {
     const auth = getAuth();
     const router = useRouter();
 
@@ -77,4 +77,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

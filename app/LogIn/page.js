@@ -11,7 +11,7 @@ import {collect_name} from '/keys/firebaseKey';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-const page = () => {
+const Page = () => {
 
     const router = useRouter();
 
@@ -253,7 +253,7 @@ const page = () => {
     )
 };
 
-export default page
+export default Page
 
 
 // await setDoc(doc(firestore, 'users'), {

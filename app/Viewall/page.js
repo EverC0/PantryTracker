@@ -15,10 +15,9 @@ import { collection, getDocs, query, getDoc, doc } from "firebase/firestore";
 const Viewall = () => {
 
     const router = useRouter();
-
-
     const [rows, setRows] = useState([])
     const [searchText, setSearchText] = useState('');
+    const [error, setError] = useState(null);
     const auth = getAuth();
 
     const user = auth.currentUser
@@ -28,14 +27,52 @@ const Viewall = () => {
         await router.push('/')
     }
 
-    if (!user){
-        
+    useEffect(() => {
+
+        const updatePantry = async () => {
+
+            if (!user) {
+                setError("You must be signed in to view your pantry.");
+                return;
+            }
+
+            try {
+                const docRef = doc(firestore, collect_name, user.uid);
+                const docs = await getDoc(docRef);
+
+                if (docs.exists()) {
+                    const cur_map = docs.data().Pantry_tab;
+                    const fetchedRows = [];
+
+                    Object.keys(cur_map).forEach((key) => {
+                        fetchedRows.push({
+                            id: key,          // Use the key as the ID
+                            count: cur_map[key], // The value is the count
+                        });
+                    });
+
+                    setRows(fetchedRows);
+                } else {
+                    console.log("No pantry data found for this user.");
+                }
+            } catch (error) {
+                console.error("Error fetching pantry data:", error);
+                setError("Failed to fetch pantry data.");
+            }
+        };
+
+    updatePantry()
+
+  }, [user]);
+
+    // Conditionally render based on whether there's an error
+    if (error) {
         return (
-        <Box sx={{display:'flex', padding:4, justifyContent:'center', gap:2}}>
-            <Alert severity="error">This is an error Alert. Must be signed In</Alert>
-            <Button variant="contained" onClick={handleLeave}> Home </Button>
-        </Box>
-    )
+            <Box sx={{display:'flex', padding:4, justifyContent:'center', gap:2}}>
+                <Alert severity="error">{error}</Alert>
+                <Button variant="contained" onClick={handleLeave}>Home</Button>
+            </Box>
+        );
     }
 
     const columns = [
@@ -44,55 +81,28 @@ const Viewall = () => {
       ];
 
 
-      const handleSearch = () => {
-        if (searchText) {
-          const filteredRows = rows.filter((row) =>
-            row.id.toLowerCase().startsWith(searchText.toLowerCase())
-          );
-          setRows(filteredRows);
-        } else {
-          setRows(rows); // Reset to original rows if search text is cleared
-        }
-      };
+    const handleSearch = () => {
+    if (searchText) {
+        const filteredRows = rows.filter((row) =>
+        row.id.toLowerCase().startsWith(searchText.toLowerCase())
+        );
+        setRows(filteredRows);
+    } else {
+        setRows(rows); // Reset to original rows if search text is cleared
+    }
+    };
+
+      
 
       const handleReset = () => {
-        updatePantry()
-      }
-
-      const updatePantry = async () => {
-        const auth = getAuth();
-        const user = auth.currentUser;
-    
-        if (!user) {
-            console.error("User is not authenticated");
-            <Alert severity="error">This is an error Alert. Must be signed In</Alert>
-            return;
-        }
-    
-        const docRef = doc(firestore, collect_name, user.uid);
-        const docs = await getDoc(docRef);
-    
-        if (docs.exists()) {
-            const cur_map = docs.data().Pantry_tab;
-            const fetchedRows = [];
-    
-            // Loop over each key in the cur_map object
-            Object.keys(cur_map).forEach((key) => {
-                fetchedRows.push({
-                    id: key,          // Use the key as the ID
-                    count: cur_map[key], // The value is the count
-                });
-            });
-    
-            setRows(fetchedRows);
-        } else {
-            console.log("No pantry data found for this user.");
-        }
+        setSearchText('');  // Clear search text
+        setRows(rows);  // Reset to original rows
     };
+
     
-      useEffect(() => {
-        updatePantry()
-      }, [])
+    // useEffect(() => {
+    // updatePantry()
+    // }, [])
 
 
     return (
