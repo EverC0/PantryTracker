@@ -6,7 +6,6 @@ import { setUserId } from 'firebase/analytics';
 import { addDoc, collection, getDocs, query, doc, setDoc, deleteDoc, count, getDoc } from "firebase/firestore";
 import { firestore } from "@/firebase"; 
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "firebase/auth";
-import {collect_name} from '/keys/firebaseKey';
 
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -63,7 +62,7 @@ const Page = () => {
             const uid = userCredential.user.uid; // Get the user's unique ID (uid)
 
             // Create a reference to the user's document in the pantry collection
-            const docRef = doc(firestore, collect_name, uid); // Use uid as the document ID
+            const docRef = doc(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME, uid); // Use uid as the document ID
             // Check if the document already exists
             const docSnap = await getDoc(docRef);
 

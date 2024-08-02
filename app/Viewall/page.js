@@ -6,7 +6,6 @@ import { firestore } from "@/firebase";
 import { useState, useEffect } from "react";
 import { getAuth } from "firebase/auth";
 import { useRouter } from 'next/navigation';
-import {collect_name} from '/keys/firebaseKey';
 
 
 import React from 'react'
@@ -37,7 +36,7 @@ const Viewall = () => {
             }
 
             try {
-                const docRef = doc(firestore, collect_name, user.uid);
+                const docRef = doc(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME, user.uid);
                 const docs = await getDoc(docRef);
 
                 if (docs.exists()) {

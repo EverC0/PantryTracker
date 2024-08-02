@@ -8,8 +8,6 @@ import { useEffect, useState } from "react";
 import { set } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useRouter } from 'next/navigation';
-import {collect_name} from '/keys/firebaseKey';
-
 
 
 const style = {
@@ -57,7 +55,7 @@ const Pantrytab = () => {
     const updatePantry = async () => {
 
         if (user){
-          const docRef = doc(firestore, collect_name, user.uid); // Use the user's UID to reference their specific document
+          const docRef = doc(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME, user.uid); // Use the user's UID to reference their specific document
           const docSnap = await getDoc(docRef);
 
           const pantryData = docSnap.data().Pantry_tab; // Assuming Pantry_tab is an object
@@ -100,7 +98,7 @@ const Pantrytab = () => {
 
     // getDoc: This is used to fetch the data of the document from Firestore so you can inspect it, check if it exists, or use the data in your logic.
 
-    const docRef = doc(collection(firestore, collect_name), user.uid); // Reference to the user's pantry document
+    const docRef = doc(collection(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME), user.uid); // Reference to the user's pantry document
 
     try {
       const docSnap = await getDoc(docRef);
@@ -139,7 +137,7 @@ const Pantrytab = () => {
       return;
     }
 
-    const docRef = doc(collection(firestore, collect_name), user.uid);
+    const docRef = doc(collection(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME), user.uid);
     const docSnap = await getDoc(docRef)
 
     if (docSnap.exists()){
