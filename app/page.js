@@ -28,7 +28,7 @@ export default function Home() {
             fontSize:'4vh',     // Make the title bold
           }}
         >
-          Welcome to Pantry Storage
+          <strong>Welcome to Pantry Storage</strong>
         </Typography>
       </Box>
 
@@ -43,17 +43,30 @@ export default function Home() {
           textAlign: 'center',       // Center the text within the box
         }}
         >
-      <Typography
+        <Typography
+            variant="body1"
+            sx={{ 
+              fontFamily: 'inherit', // Inherit font from global or parent styles
+              marginTop: 1,
+            }}
+          >
+            This application allows you to store and manage your pantry inventory in a database. 
+            You can easily view your inventory using the View tab. Keep track of your items 
+            and manage your stock efficiently!
+          </Typography>
+
+          <Typography
           variant="body1"
           sx={{ 
             fontFamily: 'inherit', // Inherit font from global or parent styles
             marginTop: 1,
           }}
         >
-          This application allows you to store and manage your pantry inventory in a database. 
-          You can easily view your inventory using the View tab. Keep track of your items 
-          and manage your stock efficiently!
+          <strong>New Feature:</strong> We've integrated OpenAI to enhance your experience further. 
+          This addition provides intelligent suggestions, insights, or even automation, making your pantry management smarter and more intuitive.
         </Typography>
+
+
       </Box>
 
       <Login/>
