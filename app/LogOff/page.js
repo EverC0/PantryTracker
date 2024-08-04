@@ -9,6 +9,7 @@ import { set } from "firebase/database";
 import { getAuth, signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation';
 
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -28,6 +29,8 @@ const Page = () => {
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
+    const [response, setResponse] = useState("");
+
     const handleOpen = () => {
         setOpen(true);
     };
@@ -46,6 +49,23 @@ const Page = () => {
             console.error('Error logging out:', error);
         }
     };
+
+    // const fetchCompletion = async () => {
+    //     try {
+    //       const res = await fetch('/api/page.js', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({ data: "your data" }),
+    //       });
+    //       const data = await res.json();
+    //       setResponse(data.completion);
+    //     } catch (error) {
+    //       console.error("Error fetching completion:", error);
+    //     }
+    //   };
+    
 
 
     return (
@@ -73,7 +93,17 @@ const Page = () => {
                     </Box>
                 </Modal>
             </Box>
+
+            {/* <Button variant="contained" color="primary" onClick={fetchCompletion}>
+                Fetch Completion
+            </Button>
+            <Typography variant="body1" style={{ marginTop: '20px' }}>
+                {response}
+            </Typography> */}
+
+
         </Container>
+     
     )
 }
 

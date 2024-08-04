@@ -4,7 +4,7 @@
 import { Box, Stack, Typography, Button, Modal, TextField, Alert} from "@mui/material";
 import { firestore } from "@/firebase"; 
 import { addDoc, collection, getDocs, query, doc, setDoc, deleteDoc, count, getDoc, updateDoc, increment, deleteField } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { set } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { useRouter } from 'next/navigation';
@@ -34,6 +34,10 @@ const Pantrytab = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [itemName, setItemName] = useState('')
+
+    const [Image, setImage] = useState('')
+    const [responseG, setResponse] = useState('')
+
     const auth = getAuth();
 
     const user = auth.currentUser;
@@ -162,6 +166,77 @@ const Pantrytab = () => {
     await updatePantry()
   }
 
+  async function handleSubmit(event){
+    event.preventDefault();
+    if(Image === ""){
+      alert("upload an image")
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/analyzeimage", {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: Image, // base64
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const data = await response.json();
+      // console.log("Full response data:", data);
+      
+      // Accessing the content of the message from the assistant
+      const description = data.message?.content?.trim(); // Using optional chaining and trim() to clean up any extra spaces
+      console.log("Description:", description);
+      
+      setResponse(description); // Assuming `setResponse` is a state setter
+      setItemName(responseG);
+    } catch (error) {
+      console.error("Error:", error);
+      alert("There was an error processing your request.");
+    }
+  }
+
+  // usestate to hold a base64 string
+  // usestate to hold the chatgot response
+  // const [Image, setImage] = useState('')
+  // const [response, setResponse] = useState('')
+
+  //image upload logic
+  // 1.user upload image
+  // 2. we can take image and convert it inyo a based64 string
+  //  what is base64, it is a string Ajsajk"" that represents en entire image
+  // 3. when we request the api route we create, we will pass the image (string) to the backend
+
+  function handleFilechnage(event){
+
+      if(event.target.files === null){
+        window.alert("no file selected choose a file")
+        return;
+      }
+      const file = event.target.files[0]
+      //covert the user file locally to a base64 string 
+      // FileReader
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        if (typeof reader.result === "string"){
+          // console.log()
+          setImage(reader.result);
+        }
+      }
+
+      reader.onerror = () => {
+        console.error("There was an error reading the file");
+      };
+    }
 
   return (
     <Box 
@@ -182,9 +257,47 @@ const Pantrytab = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+
             <Typography id="modal-modal-title" variant="h6" component="h2" >
               Add to Item
             </Typography>
+
+            {
+              Image !== "" ?
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <img 
+                  src={Image}
+                  className="w-full object-contain max-h-72"
+                />
+              </Box>
+            :
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                Once you upload an image you will see.
+              </Box>
+
+            }
+            
+            <Box component="form" onSubmit={(e) => handleSubmit(e)}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
+                <Typography variant="body2" sx={{ mb: 1, fontWeight: 'medium' }}>
+                  Upload Image
+                </Typography>
+                <TextField
+                  type="file"
+                  variant="outlined"
+                  size="small"
+                  onChange={(e) => {
+                    handleFilechnage(e)
+                  }}
+                />
+              </Box>
+
+              <Button type="submit">
+                start               
+              </Button>
+
+            </Box>
+
 
             <Stack width="100%" direction={'row'} spacing={2}>
               <TextField 
@@ -193,14 +306,14 @@ const Pantrytab = () => {
                 variant="outlined" 
                 spacing={2} 
                 fullWidth
-                value={itemName}
-                onChange={(e) => setItemName(e.target.value)}
+                value={responseG}
+                // onChange={(e) => setItemName(responseG)}
                 
                 />
               <Button 
                 variant="outline" 
                 onClick={() => {
-                  addItem(itemName)
+                  addItem(responseG)
                   setItemName('')
                   handleClose()
                 }}
@@ -286,3 +399,15 @@ const Pantrytab = () => {
     </Box>
 )}
 export default Pantrytab
+
+
+{/* <form>
+  <div className="flex flex-col mb-6">
+    <label className="mb-2 text-sm font-medium"> Upload Image</label>
+    <input
+    type="file"
+    className="text-sm border rounded-lg cursor-pointer">
+    </input>
+
+  </div>
+</form> */}
