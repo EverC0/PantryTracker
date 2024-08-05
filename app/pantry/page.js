@@ -320,6 +320,8 @@ const Pantrytab = () => {
                 onClick={() => {
                   addItem(responseG)
                   setItemName('')
+                  setResponse("")
+                  setImage("")
                   handleClose()
                 }}
               > Add </Button>
