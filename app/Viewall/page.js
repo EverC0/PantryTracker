@@ -26,43 +26,41 @@ const Viewall = () => {
         await router.push('/')
     }
 
-    useEffect(() => {
+    const updatePantry = async () => {
 
-        const updatePantry = async () => {
+        if (!user) {
+            setError("You must be signed in to view your pantry.");
+            return;
+        }
 
-            if (!user) {
-                setError("You must be signed in to view your pantry.");
-                return;
-            }
+        try {
+            const docRef = doc(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME, user.uid);
+            const docs = await getDoc(docRef);
 
-            try {
-                const docRef = doc(firestore, process.env.NEXT_PUBLIC_COLLECT_NAME, user.uid);
-                const docs = await getDoc(docRef);
+            if (docs.exists()) {
+                const cur_map = docs.data().Pantry_tab;
+                const fetchedRows = [];
 
-                if (docs.exists()) {
-                    const cur_map = docs.data().Pantry_tab;
-                    const fetchedRows = [];
-
-                    Object.keys(cur_map).forEach((key) => {
-                        fetchedRows.push({
-                            id: key,          // Use the key as the ID
-                            count: cur_map[key], // The value is the count
-                        });
+                Object.keys(cur_map).forEach((key) => {
+                    fetchedRows.push({
+                        id: key,          // Use the key as the ID
+                        count: cur_map[key], // The value is the count
                     });
+                });
 
-                    setRows(fetchedRows);
-                } else {
-                    console.log("No pantry data found for this user.");
-                }
-            } catch (error) {
-                console.error("Error fetching pantry data:", error);
-                setError("Failed to fetch pantry data.");
+                setRows(fetchedRows);
+            } else {
+                console.log("No pantry data found for this user.");
             }
-        };
+        } catch (error) {
+            console.error("Error fetching pantry data:", error);
+            setError("Failed to fetch pantry data.");
+        }
+    };
 
+    useEffect(() => {
     updatePantry()
-
-  }, [user]);
+  }, []);
 
     // Conditionally render based on whether there's an error
     if (error) {
@@ -96,6 +94,8 @@ const Viewall = () => {
       const handleReset = () => {
         setSearchText('');  // Clear search text
         setRows(rows);  // Reset to original rows
+        updatePantry()
+
     };
 
     
