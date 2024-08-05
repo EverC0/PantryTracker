@@ -62,9 +62,9 @@ export default function Home() {
             marginTop: 1,
           }}
         >
-          <strong>New Feature:</strong> We've integrated OpenAI to enhance your experience further. 
-          This addition provides intelligent suggestions, insights, or even automation, making your pantry management smarter and more intuitive.
-        </Typography>
+          <strong>New Feature:</strong> We&apos;ve integrated OpenAI to enhance your experience further. 
+            This addition provides intelligent suggestions, insights, or even automation, making your pantry management smarter and more intuitive.
+          </Typography>
 
 
       </Box>

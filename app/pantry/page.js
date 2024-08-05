@@ -2,6 +2,7 @@
 
 
 import { Box, Stack, Typography, Button, Modal, TextField, Alert} from "@mui/material";
+import Image from 'next/image';
 import { firestore } from "@/firebase"; 
 import { addDoc, collection, getDocs, query, doc, setDoc, deleteDoc, count, getDoc, updateDoc, increment, deleteField } from "firebase/firestore";
 import { use, useEffect, useState } from "react";
@@ -35,7 +36,7 @@ const Pantrytab = () => {
     const handleClose = () => setOpen(false);
     const [itemName, setItemName] = useState('')
 
-    const [Image, setImage] = useState('')
+    const [ImageS, setImage] = useState('')
     const [responseG, setResponse] = useState('')
 
     const auth = getAuth();
@@ -168,7 +169,7 @@ const Pantrytab = () => {
 
   async function handleSubmit(event){
     event.preventDefault();
-    if(Image === ""){
+    if(ImageS === ""){
       alert("upload an image")
       return;
     }
@@ -180,7 +181,7 @@ const Pantrytab = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          image: Image, // base64
+          image: ImageS, // base64
         }),
       });
   
@@ -263,11 +264,15 @@ const Pantrytab = () => {
             </Typography>
 
             {
-              Image !== "" ?
+              ImageS !== "" ?
               <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-                <img 
-                  src={Image}
-                  className="w-full object-contain max-h-72"
+                <Image 
+                  src={ImageS}
+                  alt="A description of the image" 
+                  layout="responsive" 
+                  width={500} 
+                  height={300}
+                  className="object-contain max-h-72"
                 />
               </Box>
             :
