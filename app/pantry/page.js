@@ -277,7 +277,7 @@ const Pantrytab = () => {
               </Box>
             :
               <Box sx={{ display: 'flex', flexDirection: 'column', mb: 2 }}>
-                Once you upload an image you will see.
+                Once you upload an image you will see. (Upload Image type only please)
               </Box>
 
             }
