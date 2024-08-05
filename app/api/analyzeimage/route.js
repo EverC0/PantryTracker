@@ -8,7 +8,6 @@ export async function POST(req) {  // No `res` parameter in the function
   try {
     const { image } = await req.json(); // req.body if using parsed body
 
-    
     const response = await openai.chat.completions.create({
       model: "gpt-4o",  
       messages: [

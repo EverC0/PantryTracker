@@ -298,7 +298,7 @@ const Pantrytab = () => {
               </Box>
 
               <Button type="submit">
-                start               
+                start      
               </Button>
 
             </Box>
